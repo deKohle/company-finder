@@ -1,0 +1,13 @@
+.table-results tr:nth-child(even) {
+    background-color: #0000000e!important;
+}
+.table-field {
+    background-color: inherit;
+    border-width: 0;
+    color: #fff;
+}
+.table-results {
+    max-width: 1200px;
+    border-radius: 10px;
+    background-color: #5469ac;
+}

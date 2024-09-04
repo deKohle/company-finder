@@ -1,0 +1,33 @@
+<div id="search-mask">
+  <form (ngSubmit)="search()" #searchForm="ngForm">
+    <div id="main-search">
+      <input type="text" [(ngModel)]="searchFields.company_name" #company_name="ngModel" 
+        class="form-control mb-1" id="company-input" name="company_name">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+    <div id="additional-search">
+
+    </div>
+  </form>
+</div>
+<div class="row">
+  <div class="col"></div>
+  <div class="col">
+    <div id="page-changer"></div>
+    <div id="search-results w-100">
+      <table class="table table-results">
+        <thead>
+
+        </thead>
+        <tbody>
+          @for (companyObj of searchFields.results; track companyObj.id; let idx = $index) {
+            <tr class="table-row">
+              <td class="table-field">{{ companyObj.name }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
