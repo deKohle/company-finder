@@ -3,31 +3,101 @@
     <div id="main-search">
       <input type="text" [(ngModel)]="searchFields.company_name" #company_name="ngModel" 
         class="form-control mb-1" id="company-input" name="company_name">
-      <button class="btn btn-primary" type="submit">Search</button>
+      <button class="btn btn-primary" type="submit">Suchen</button>
     </div>
     <div id="additional-search">
 
     </div>
   </form>
 </div>
-<div class="row">
-  <div class="col"></div>
-  <div class="col">
-    <div id="page-changer"></div>
-    <div id="search-results w-100">
-      <table class="table table-results">
-        <thead>
-
-        </thead>
-        <tbody>
-          @for (companyObj of searchFields.results; track companyObj.id; let idx = $index) {
-            <tr class="table-row">
-              <td class="table-field">{{ companyObj.name }}</td>
+@if(searchFields.page != undefined) {
+  <div class="row mt-2">
+    <div class="col-xl"></div>
+    <div class="col-xl">
+      @if(searchFields.page.lastPage > 1) {
+        <div class="row page-changer">
+          <div class="col"></div>
+          <div class="col btn-group" role="group">
+            <button type="button" [attr.disabled]="searchFields.page.firstPage >= searchFields.page.page ? true : null" 
+                class="btn btn-primary" (click)="changePage(searchFields.page.firstPage)">
+              <i class="bi bi-chevron-double-left"></i>
+            </button>
+            <button type="button" [attr.disabled]="searchFields.page.firstPage >= searchFields.page.page ? true : null" 
+                class="btn btn-primary" (click)="changePage(searchFields.page.page-1)">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button type="button" disabled="true" class="btn btn-primary">{{ searchFields.page.page }}</button>
+            <button type="button" [attr.disabled]="searchFields.page.lastPage <= searchFields.page.page ? true : null" 
+                class="btn btn-primary" (click)="changePage(searchFields.page.page+1)">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+            <button type="button" [attr.disabled]="searchFields.page.lastPage <= searchFields.page.page ? true : null" 
+                class="btn btn-primary" (click)="changePage(searchFields.page.lastPage)">
+              <i class="bi bi-chevron-double-right"></i>
+            </button>
+          </div>
+          <div class="col"></div>
+        </div>
+      }
+      <div id="search-results w-100">
+        <table class="table table-results">
+          <thead>
+            <tr>
+              <th (click)="changeSort(sortObj.COMPANY)">
+                Unternehmen
+                @if(searchFields.sortBy == sortObj.COMPANY) {
+                  @if(searchFields.sortDescending) {
+                    <i class="bi bi-chevron-down"></i>
+                  } @else {
+                    <i class="bi bi-chevron-up"></i>
+                  }
+                }
+              </th>
+              <th (click)="changeSort(sortObj.STREET)">
+                Straße
+                @if(searchFields.sortBy == sortObj.STREET) {
+                  @if(searchFields.sortDescending) {
+                    <i class="bi bi-chevron-down"></i>
+                  } @else {
+                    <i class="bi bi-chevron-up"></i>
+                  }
+                }
+              </th>
+              <th (click)="changeSort(sortObj.CITY)">
+                (PLZ) Stadt
+                @if(searchFields.sortBy == sortObj.CITY) {
+                  @if(searchFields.sortDescending) {
+                    <i class="bi bi-chevron-down"></i>
+                  } @else {
+                    <i class="bi bi-chevron-up"></i>
+                  }
+                }
+              </th>
+              <th (click)="changeSort(sortObj.COUNTRY)">
+                Land
+                @if(searchFields.sortBy == sortObj.COUNTRY) {
+                  @if(searchFields.sortDescending) {
+                    <i class="bi bi-chevron-down"></i>
+                  } @else {
+                    <i class="bi bi-chevron-up"></i>
+                  }
+                }
+              </th>
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @for (companyObj of searchFields.results; track companyObj.id; let idx = $index) {
+              <tr class="table-row">
+                <td class="table-field">{{ companyObj.name }}</td>
+                <td class="table-field">{{ companyObj.street }} {{ companyObj.streetNumber }}</td>
+                <td class="table-field">{{ companyObj.postcode }} {{ companyObj.city }}</td>
+                <td class="table-field">{{ companyObj.country }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
+    <div class="col-xl"></div>
   </div>
-  <div class="col"></div>
-</div>
+}

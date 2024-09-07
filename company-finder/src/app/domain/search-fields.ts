@@ -1,4 +1,4 @@
-import { ShortCompanyResult, ShortCompanyResultPage } from "./short-company-result";
+import { ResultPage, ShortCompanyResult, ShortCompanyResultPage } from "./short-company-result";
 
 /**
  * the fields available during a search
@@ -6,7 +6,7 @@ import { ShortCompanyResult, ShortCompanyResultPage } from "./short-company-resu
  */
 export class SearchFields {
     public company_name: string;
-    public page: ShortCompanyResultPage | undefined;
+    public page: ResultPage | undefined;
     public results: ShortCompanyResult[];
     public sortDescending: boolean;
     public sortBy: SortFields;
@@ -34,7 +34,7 @@ export class SearchFields {
      * @param result 
      */
     public updateResult(result: ShortCompanyResultPage) {
-        this.page = result;
+        this.page = result.page;
         this.results = result.results;
     }
     /*public get results(): ShortCompanyResult[] {
@@ -47,23 +47,33 @@ export class SearchFields {
      * turns the search into an URL
      * @param baseUrl 
      * @param pageSize 
+     * @param page to ask for a specific page of the result
      * @returns 
      */
-    public toUrl(baseUrl: string, pageSize: number): URL {
+    public toUrl(baseUrl: string, pageSize: number, page: undefined | number = undefined): URL {
       var result = new URL(baseUrl);
       result.searchParams.append("size",pageSize.toString());
       result.searchParams.append("sort",this.sortBy);
       result.searchParams.append("desc",this.sortDescending.toString());
-      if(this.page != undefined) {
-        result.searchParams.append("page",this.page.page.toString());
-      }
-      else {
-        result.searchParams.append("page",ShortCompanyResultPage.FIRST_PAGE_NUMBER.toString());
-      }
+      result.searchParams.append("page",this.getPageNumber(page));
       if(this.company_name.length >= 1) {
         result.searchParams.append("search_company",this.company_name);
       }
       return result;
+    }
+    /**
+     * get the wanted page-number to ask for
+     * @param page to ask for a specific page of the result
+     * @returns 
+     */
+    public getPageNumber(page: undefined | number = undefined): string {
+      if (page == undefined) {
+        if(this.page != undefined) {
+          return this.page.page.toString();
+        }
+        return ResultPage.FIRST_PAGE_NUMBER.toString();
+      }
+      return page.toString();
     }
 }
 /**

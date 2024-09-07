@@ -57,13 +57,34 @@ export class ShortCompanyResult {
  */
 export class ShortCompanyResultPage {
     /**
-     * whether the page-count starts at 0 or 1
-     */
-    public static readonly FIRST_PAGE_NUMBER = 1;
-    /**
      * the list of results
      */
     public results: ShortCompanyResult[];
+    /**
+     * informations about the current page
+     */
+    public page: ResultPage;
+    /**
+     * takes the server-response parsed as json and turns it into this internal page-format
+     * @param obj 
+     */
+    constructor(obj: any) {
+        var list = new Array<ShortCompanyResult>();
+        for(var entry of obj.content) {
+            list.push(new ShortCompanyResult(entry));
+        }
+        this.results = list;
+        this.page = new ResultPage(obj);
+    }
+}
+/**
+ * informations about the current page
+ */
+export class ResultPage {
+    /**
+     * whether the page-count starts at 0 or 1
+     */
+    public static readonly FIRST_PAGE_NUMBER = 1;
     /**
      * the current page number
      */
@@ -77,7 +98,7 @@ export class ShortCompanyResultPage {
      * (always returns same value)
      */
     public get firstPage(): number {
-        return ShortCompanyResultPage.FIRST_PAGE_NUMBER;
+        return ResultPage.FIRST_PAGE_NUMBER;
     }
     /**
      * if there is a result-page after this page
@@ -89,19 +110,13 @@ export class ShortCompanyResultPage {
      * if this is not the first page of the search
      */
     public get hasPrevious(): boolean {
-        return this.page > ShortCompanyResultPage.FIRST_PAGE_NUMBER;
+        return this.page > ResultPage.FIRST_PAGE_NUMBER;
     }
     /**
      * takes the server-response parsed as json and turns it into this internal page-format
      * @param obj 
      */
     constructor(obj: any) {
-        console.log(obj);
-        var list = new Array<ShortCompanyResult>();
-        for(var entry of obj.content) {
-            list.push(new ShortCompanyResult(entry));
-        }
-        this.results = list;
         this.page = obj.pageable.pageNumber;
         this.lastPage = obj.totalPages;
     }

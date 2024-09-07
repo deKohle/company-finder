@@ -1,3 +1,5 @@
+$primary-color: #5469ac;
+
 .table-results tr:nth-child(even) {
     background-color: #0000000e!important;
 }
@@ -5,9 +7,13 @@
     background-color: inherit;
     border-width: 0;
     color: #fff;
+    white-space: nowrap;
 }
 .table-results {
     max-width: 1200px;
     border-radius: 10px;
-    background-color: #5469ac;
+    background-color: $primary-color;
+}
+.btn-primary {
+    background-color: $primary-color;
 }
