@@ -1,14 +1,43 @@
-<div id="search-mask">
-  <form (ngSubmit)="search()" #searchForm="ngForm">
-    <div id="main-search">
-      <input type="text" [(ngModel)]="searchFields.company_name" #company_name="ngModel" 
-        class="form-control mb-1" id="company-input" name="company_name">
-      <button class="btn btn-primary" type="submit">Suchen</button>
-    </div>
-    <div id="additional-search">
-
-    </div>
-  </form>
+<div class="row">
+  <div class="col-xxl"></div>
+  <div class="col-xxl-8">
+    <form (ngSubmit)="search()" #searchForm="ngForm" class="search-mask">
+      <div id="main-search" class="row">
+        <div class="col mb-2 me-1 w-100">
+          <label for="company_name" class="form-label">Unternehmen</label>
+          <input type="text" [(ngModel)]="searchFields.company_name" #company_name="ngModel" 
+            class="form-control" id="company-input" name="company_name">
+        </div>
+      </div>
+      <div id="additional-search">
+        <div class="row">
+          <div class="col w-50 mb-2 me-1">
+            <label for="street_name" class="form-label">Straße</label>
+            <input type="text" [(ngModel)]="searchFields.street_name" #street_name="ngModel" 
+              class="form-control" id="street-input" name="street_name">
+          </div>
+          <div class="col w-50 mb-2 me-1">
+            <label for="country" class="form-label">Land</label>
+            <input type="text" [(ngModel)]="searchFields.country" #country="ngModel" 
+              class="form-control" id="country-input" name="country">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col w-100 mb-3">
+            <label for="city_postcode" class="form-label">PLZ</label>
+            <input type="text" [(ngModel)]="searchFields.city_postcode" #city_postcode="ngModel" 
+              class="form-control" id="city-postcode-input" name="city_postcode">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"></div>
+        <button class="col btn btn-primary" type="submit">Suchen</button>
+        <div class="col"></div>
+      </div>
+    </form>
+  </div>
+  <div class="col-xxl"></div>
 </div>
 @if(searchFields.page != undefined) {
   <div class="row mt-2">
@@ -85,7 +114,7 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="result-body">
             @for (companyObj of searchFields.results; track companyObj.id; let idx = $index) {
               <tr class="table-row">
                 <td class="table-field">{{ companyObj.name }}</td>

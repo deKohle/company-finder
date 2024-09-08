@@ -17,3 +17,10 @@ $primary-color: #5469ac;
 .btn-primary {
     background-color: $primary-color;
 }
+.search-mask {
+    border-color: $primary-color;
+    border-width: 1px;
+    border-style: solid;
+    padding: 20px 40px;
+    margin: 10px;
+}

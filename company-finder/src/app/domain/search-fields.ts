@@ -6,12 +6,18 @@ import { ResultPage, ShortCompanyResult, ShortCompanyResultPage } from "./short-
  */
 export class SearchFields {
     public company_name: string;
+    public street_name: string;
+    public country: string;
+    public city_postcode: string;
     public page: ResultPage | undefined;
     public results: ShortCompanyResult[];
     public sortDescending: boolean;
     public sortBy: SortFields;
     constructor() {
       this.company_name = "";
+      this.street_name = "";
+      this.country = "";
+      this.city_postcode = "";
       this.results = new Array<ShortCompanyResult>();
       this.page = undefined;
       this.sortDescending = false;
@@ -58,6 +64,15 @@ export class SearchFields {
       result.searchParams.append("page",this.getPageNumber(page));
       if(this.company_name.length >= 1) {
         result.searchParams.append("search_company",this.company_name);
+      }
+      if(this.street_name.length >= 1) {
+        result.searchParams.append("search_street",this.street_name);
+      }
+      if(this.country.length >= 1) {
+        result.searchParams.append("search_country",this.country);
+      }
+      if(this.city_postcode.length >= 1) {
+        result.searchParams.append("search_postcode",this.city_postcode);
       }
       return result;
     }
