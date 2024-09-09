@@ -44,7 +44,7 @@
     <div class="col-xl"></div>
     <div class="col-xl">
       @if(searchFields.page.lastPage > 1) {
-        <div class="row page-changer">
+        <div class="row page-changer mb-3">
           <div class="col"></div>
           <div class="col btn-group" role="group">
             <button type="button" [attr.disabled]="searchFields.page.firstPage >= searchFields.page.page ? true : null" 
@@ -70,7 +70,7 @@
       }
       <div id="search-results w-100">
         <table class="table table-results">
-          <thead>
+          <thead class="sticky-head">
             <tr>
               <th (click)="changeSort(sortObj.COMPANY)">
                 Unternehmen
@@ -112,15 +112,62 @@
                   }
                 }
               </th>
+              <th></th>
             </tr>
           </thead>
           <tbody class="result-body">
             @for (companyObj of searchFields.results; track companyObj.id; let idx = $index) {
-              <tr class="table-row">
+              <tr class="table-row" (click)="showAdditionalInfo(companyObj)">
                 <td class="table-field">{{ companyObj.name }}</td>
                 <td class="table-field">{{ companyObj.street }} {{ companyObj.streetNumber }}</td>
                 <td class="table-field">{{ companyObj.postcode }} {{ companyObj.city }}</td>
                 <td class="table-field">{{ companyObj.country }}</td>
+                <td class="table-field">
+                  @if(!companyObj.additionalInfo) {
+                    <i class="bi bi-chevron-down"></i>
+                  } @else {
+                    <i class="bi bi-chevron-up"></i>
+                  }
+                </td>
+              </tr>
+              <tr [attr.hidden]="companyObj.additionalInfo ? null : true" (click)="showAdditionalInfo(companyObj)">
+                <td colspan="5" class="table-field">
+                  <div class="row mb-2">
+                    <div class="col">
+                      <b>Firmeninformationen</b>
+                      <div>
+                        @if(companyObj.state != undefined) {
+                          Bundesstaat: {{ companyObj.state }}
+                        }
+                      </div>
+                      @if(companyObj.additionalInfoObj != undefined) {
+                        <div>
+                          IBAN: {{ companyObj.additionalInfoObj.bankIban }}
+                        </div>
+                        <div>
+                          Sektor: {{ companyObj.additionalInfoObj.stockSector }}
+                        </div>
+                        <div>
+                          Industrie: {{ companyObj.additionalInfoObj.stockIndustry }}
+                        </div>
+                      }
+                    </div>
+                    <div class="col">
+                      @if(companyObj.additionalInfoObj != undefined) {
+                        <b>Kontakinformationen</b>
+                        <div>
+                          {{ companyObj.additionalInfoObj.contactFirstName }} {{ companyObj.additionalInfoObj.contactLastName }}
+                        </div>
+                        <div>
+                          {{ companyObj.additionalInfoObj.contactPhoneNumber }}
+                        </div>
+                        <div>
+                          {{ companyObj.additionalInfoObj.contactEmail }}
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </td>
               </tr>
             }
           </tbody>

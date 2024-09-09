@@ -3,6 +3,7 @@ import { CompanySearcherService } from '../services/company-searcher.service';
 import { SearchFields, SortFields } from '../domain/search-fields';
 import { FormsModule, NgForm} from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { ShortCompanyResult } from '../domain/short-company-result';
 
 @Component({
   standalone: true,
@@ -50,7 +51,20 @@ export class HomeComponent {
    * changes the page of the result to the given page-number
    * @param page 
    */
-  public changePage(page: number) {
+  public changePage(page: number): void {
     this.search(page);
+  }
+  /**
+   * adds the additional informations to an company-result, if it wasn't already loaded
+   * and then shows these informations
+   * @param resultObj 
+   */
+  public async showAdditionalInfo(resultObj: ShortCompanyResult): Promise<void> {
+    if(!resultObj.additionalInfo && resultObj.additionalInfoObj == undefined) {
+      console.log("dfdsf");
+      resultObj.additionalInfoObj = await this.searcher.getCompany(resultObj);
+    }
+    console.log("dfdsfasdfsdfd");
+    resultObj.additionalInfo = !resultObj.additionalInfo;
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ShortCompanyResultPage } from '../domain/short-company-result';
+import { AdditionalInfo, ShortCompanyResult, ShortCompanyResultPage } from '../domain/short-company-result';
 import { SearchFields } from '../domain/search-fields';
 
 /**
@@ -25,5 +25,13 @@ export class CompanySearcherService {
     var result = new ShortCompanyResultPage(await response.json());
     search.updateResult(result);
     return result;
+  }
+  /**
+   * gets additional informations about an company
+   * @param resultObj the object containing the id of the wanted object
+   */
+  public async getCompany(resultObj: ShortCompanyResult): Promise<AdditionalInfo> {
+    var response = await(fetch(CompanySearcherService.API_URL+"/company/"+resultObj.id));
+    return new AdditionalInfo(await response.json());
   }
 }

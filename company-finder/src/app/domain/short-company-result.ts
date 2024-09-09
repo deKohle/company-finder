@@ -36,12 +36,20 @@ export class ShortCompanyResult {
      */
     public country: string;
     /**
+     * if the additional infos are getting shown
+     */
+    public additionalInfo: boolean;
+    /**
+     * additional informations about this result
+     */
+    public additionalInfoObj: AdditionalInfo | undefined;
+    /**
      * create a new object from the json-response
      * -> allows for later changes
      * @param obj 
      */
     constructor(obj: any) {
-        
+        this.additionalInfo = false;
         this.id = obj.id;
         this.name = obj.company;
         this.street = obj.street;
@@ -119,5 +127,28 @@ export class ResultPage {
     constructor(obj: any) {
         this.page = obj.pageable.pageNumber;
         this.lastPage = obj.totalPages;
+    }
+}
+/**
+ * additional informations about a result entry
+ */
+export class AdditionalInfo {
+    public contactFirstName: string;
+    public contactLastName: string;
+    public contactJobTitle: string;
+    public contactPhoneNumber: string;
+    public contactEmail: string;
+    public bankIban: string;
+    public stockSector: string;
+    public stockIndustry: string;
+    constructor(obj: any) {
+        this.contactFirstName = obj.contact_first_name;
+        this.contactLastName = obj.contact_last_name;
+        this.contactJobTitle = obj.contact_job_title;
+        this.contactPhoneNumber = obj.contact_phone_number;
+        this.contactEmail = obj.contact_email;
+        this.bankIban = obj.bank_iban;
+        this.stockSector = obj.stock_sector;
+        this.stockIndustry = obj.stock_industry;
     }
 }
